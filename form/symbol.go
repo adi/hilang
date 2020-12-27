@@ -2,6 +2,8 @@ package form
 
 import (
 	"fmt"
+
+	"github.com/adi/hilang-routine/common"
 )
 
 // SymbolForm ..
@@ -22,7 +24,7 @@ func (s SymbolForm) Name() string {
 }
 
 // Eval ..
-func (s SymbolForm) Eval(env *Environment) (interface{}, error) {
+func (s SymbolForm) Eval(env *common.Environment) (interface{}, error) {
 	value, ok := env.Lookup(s.name)
 	if ok {
 		return value, nil

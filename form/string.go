@@ -1,5 +1,7 @@
 package form
 
+import "github.com/adi/hilang-routine/common"
+
 // StringForm ..
 type StringForm struct {
 	value string
@@ -13,6 +15,6 @@ func NewString(value string) *StringForm {
 }
 
 // Eval ..
-func (strf StringForm) Eval(env *Environment) (interface{}, error) {
+func (strf StringForm) Eval(env *common.Environment) (interface{}, error) {
 	return strf.value, nil
 }

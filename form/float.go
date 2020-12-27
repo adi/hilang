@@ -1,5 +1,7 @@
 package form
 
+import "github.com/adi/hilang-routine/common"
+
 // FloatForm ..
 type FloatForm struct {
 	value float64
@@ -13,6 +15,6 @@ func NewFloat(value float64) *FloatForm {
 }
 
 // Eval ..
-func (floatf FloatForm) Eval(env *Environment) (interface{}, error) {
+func (floatf FloatForm) Eval(env *common.Environment) (interface{}, error) {
 	return floatf.value, nil
 }

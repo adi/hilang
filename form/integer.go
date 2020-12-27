@@ -1,5 +1,7 @@
 package form
 
+import "github.com/adi/hilang-routine/common"
+
 // IntegerForm ..
 type IntegerForm struct {
 	value int64
@@ -13,6 +15,6 @@ func NewInteger(value int64) *IntegerForm {
 }
 
 // Eval ..
-func (intf IntegerForm) Eval(env *Environment) (interface{}, error) {
+func (intf IntegerForm) Eval(env *common.Environment) (interface{}, error) {
 	return intf.value, nil
 }
