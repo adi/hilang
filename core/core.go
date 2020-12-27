@@ -54,6 +54,18 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 				return nil, fmt.Errorf("Parameter declaration missing")
 			}
 			possibleParams := overloadItems[0]
+			bodyForms := overloadItems[1:]
+			code := func(env *common.Environment) (interface{}, error) {
+				var result interface{}
+				var err error
+				for _, bodyForm := range bodyForms {
+					result, err = bodyForm.Eval(env)
+					if err != nil {
+						return nil, err
+					}
+				}
+				return result, nil
+			}
 			if params, ok := possibleParams.(*form.ListForm); ok {
 				paramsItems := params.Items()
 				rawParamNames := make([]string, 0)
@@ -78,6 +90,7 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 						paramNames = append(paramNames, restParamName)
 						retFn.Variadic = &common.Overload{
 							Params: paramNames,
+							Code:   code,
 						}
 						retFn.VariadicFixed = i
 						fixedOverload = false
@@ -95,6 +108,7 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 					}
 					retFn.FixedArity[arity] = &common.Overload{
 						Params: paramNames,
+						Code:   code,
 					}
 				}
 			} else {
