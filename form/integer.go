@@ -1,6 +1,10 @@
 package form
 
-import "github.com/adi/hilang-routine/common"
+import (
+	"strconv"
+
+	"github.com/adi/hilang-routine/common"
+)
 
 // IntegerForm ..
 type IntegerForm struct {
@@ -12,6 +16,11 @@ func NewInteger(value int64) *IntegerForm {
 	return &IntegerForm{
 		value: value,
 	}
+}
+
+// String ..
+func (intf IntegerForm) String() string {
+	return strconv.FormatInt(intf.value, 10)
 }
 
 // Eval ..

@@ -18,16 +18,21 @@ func NewSymbol(name string) *SymbolForm {
 	}
 }
 
+// String ..
+func (symf SymbolForm) String() string {
+	return symf.name
+}
+
 // Name ..
-func (s SymbolForm) Name() string {
-	return s.name
+func (symf SymbolForm) Name() string {
+	return symf.name
 }
 
 // Eval ..
-func (s SymbolForm) Eval(env *common.Environment) (interface{}, error) {
-	value, ok := env.Lookup(s.name)
+func (symf SymbolForm) Eval(env *common.Environment) (interface{}, error) {
+	value, ok := env.Lookup(symf.name)
 	if ok {
 		return value, nil
 	}
-	return nil, fmt.Errorf("Unable to resolve symbol: %s in this context", s.name)
+	return nil, fmt.Errorf("Unable to resolve symbol: %s in this context", symf.name)
 }

@@ -30,7 +30,8 @@ func main() {
 	call.Append(form.NewSymbol("sqrt"))
 	call.Append(form.NewSymbol("x"))
 	fnOverload.Append(call)
-	declaration.Append(fnOverload)
+	fn.Append(fnOverload)
+	declaration.Append(fn)
 	program.Append(declaration)
 
 	statement := form.NewList()

@@ -2,6 +2,7 @@ package form
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/adi/hilang-routine/common"
 )
@@ -18,6 +19,16 @@ func NewList() *ListForm {
 	}
 }
 
+// String ..
+func (lstf ListForm) String() string {
+	ret := "( "
+	for _, item := range lstf.items {
+		ret += item.String() + " "
+	}
+	ret += ")"
+	return ret
+}
+
 // Append ..
 func (lstf *ListForm) Append(item Form) {
 	lstf.items = append(lstf.items, item)
@@ -30,6 +41,7 @@ func (lstf ListForm) Items() []Form {
 
 // Eval ..
 func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
+	log.Printf("EVAL LIST: %v\n", lstf)
 	if len(lstf.items) == 0 {
 		return lstf.items, nil
 	}

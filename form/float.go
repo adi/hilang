@@ -1,6 +1,10 @@
 package form
 
-import "github.com/adi/hilang-routine/common"
+import (
+	"strconv"
+
+	"github.com/adi/hilang-routine/common"
+)
 
 // FloatForm ..
 type FloatForm struct {
@@ -12,6 +16,11 @@ func NewFloat(value float64) *FloatForm {
 	return &FloatForm{
 		value: value,
 	}
+}
+
+// String ..
+func (floatf FloatForm) String() string {
+	return strconv.FormatFloat(floatf.value, 'g', -1, 64)
 }
 
 // Eval ..

@@ -1,6 +1,10 @@
 package form
 
-import "github.com/adi/hilang-routine/common"
+import (
+	"strings"
+
+	"github.com/adi/hilang-routine/common"
+)
 
 // StringForm ..
 type StringForm struct {
@@ -12,6 +16,11 @@ func NewString(value string) *StringForm {
 	return &StringForm{
 		value: value,
 	}
+}
+
+// String ..
+func (strf StringForm) String() string {
+	return "\"" + strings.ReplaceAll(strf.value, "\"", "\\\"") + "\""
 }
 
 // Eval ..
