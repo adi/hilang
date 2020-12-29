@@ -2,7 +2,6 @@ package form
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/adi/hilang-routine/common"
 )
@@ -41,7 +40,6 @@ func (lstf ListForm) Items() []Form {
 
 // Eval ..
 func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
-	log.Printf("EVAL LIST: %v\n", lstf)
 	if len(lstf.items) == 0 {
 		return lstf.items, nil
 	}

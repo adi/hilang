@@ -2,11 +2,33 @@ package main
 
 import (
 	"log"
+	"strings"
 
 	"github.com/adi/hilang-routine/common"
 	"github.com/adi/hilang-routine/core"
 	"github.com/adi/hilang-routine/form"
+	"github.com/adi/hilang-routine/parser"
 )
+
+func transformExpressionIntoForm(expr parser.Expression) form.Form {
+	switch expr := expr.(type) {
+	case *parser.Integer:
+		return form.NewInteger(expr.Literal)
+	case *parser.Float:
+		return form.NewFloat(expr.Literal)
+	case *parser.String:
+		return form.NewString(expr.Literal)
+	case *parser.Symbol:
+		return form.NewSymbol(expr.Literal)
+	case []parser.Expression:
+		exprAsList := form.NewList()
+		for _, item := range expr {
+			exprAsList.Append(transformExpressionIntoForm(item))
+		}
+		return exprAsList
+	}
+	return nil
+}
 
 func main() {
 	rootEnv := common.NewEnvironment(nil)
@@ -18,28 +40,21 @@ func main() {
 	program := form.NewList()
 	program.Append(form.NewSymbol("do"))
 
-	declaration := form.NewList()
-	declaration.Append(form.NewSymbol("def"))
-	declaration.Append(form.NewSymbol("mysqrt"))
-	fn := form.NewList()
-	fn.Append(form.NewSymbol("fn"))
-	fnOverload := form.NewList()
-	declarationParams := form.NewList()
-	declarationParams.Append(form.NewSymbol("x"))
-	fnOverload.Append(declarationParams)
-	call := form.NewList()
-	call.Append(form.NewSymbol("+"))
-	call.Append(form.NewSymbol("x"))
-	call.Append(form.NewInteger(15))
-	fnOverload.Append(call)
-	fn.Append(fnOverload)
-	declaration.Append(fn)
-	program.Append(declaration)
+	code := `
+		(def mysqrt
+			(fn ((x) (+ x 15))))
+		(mysqrt 2)
+	`
 
-	statement := form.NewList()
-	statement.Append(form.NewSymbol("mysqrt"))
-	statement.Append(form.NewInteger(2))
-	program.Append(statement)
+	parser := parser.NewParser(strings.NewReader(code), "main.hi")
+	expressions, err := parser.Parse()
+	if err != nil {
+		panic(err)
+	}
+
+	for _, expr := range expressions {
+		program.Append(transformExpressionIntoForm(expr))
+	}
 
 	val, err := program.Eval(rootEnv)
 
