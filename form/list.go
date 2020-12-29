@@ -58,7 +58,7 @@ func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
 	}
 
 	// Function => eval args into a function scoped environment before invocation
-	if function, ok := possibleCallable.(*common.Function); ok {
+	if function, ok := possibleCallable.(*Function); ok {
 
 		args := lstf.items[1:]
 
@@ -71,7 +71,18 @@ func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
 				}
 				fnEnv.Set(paramName, value)
 			}
-			return fixedOverload.Code(fnEnv)
+			if fixedOverload.Code != nil {
+				var result interface{}
+				var err error
+				for _, bodyForm := range fixedOverload.Code {
+					result, err = bodyForm.Eval(fnEnv)
+					if err != nil {
+						return nil, err
+					}
+				}
+				return result, nil
+			}
+			return fixedOverload.NativeCode(fnEnv)
 		}
 
 		if function.Variadic != nil {
@@ -86,7 +97,18 @@ func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
 					fnEnv.Set(paramName, value)
 				}
 				fnEnv.Set(function.Variadic.Params[pLen-1], args[:pLen+1])
-				return function.Variadic.Code(fnEnv)
+				if function.Variadic.Code != nil {
+					var result interface{}
+					var err error
+					for _, bodyForm := range function.Variadic.Code {
+						result, err = bodyForm.Eval(fnEnv)
+						if err != nil {
+							return nil, err
+						}
+					}
+					return result, nil
+				}
+				return function.Variadic.NativeCode(fnEnv)
 			}
 		}
 

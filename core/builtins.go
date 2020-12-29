@@ -5,15 +5,16 @@ import (
 	"math"
 
 	"github.com/adi/hilang-routine/common"
+	"github.com/adi/hilang-routine/form"
 )
 
 // MathPlus ..
-var MathPlus = &common.Function{
+var MathPlus = &form.Function{
 	Name: "+",
-	FixedArity: map[int]*common.Overload{
+	FixedArity: map[int]*form.Overload{
 		2: {
 			Params: []string{"x", "y"},
-			Code: func(env *common.Environment) (interface{}, error) {
+			NativeCode: func(env *common.Environment) (interface{}, error) {
 				if x, ok := env.Lookup("x"); ok {
 					if y, ok := env.Lookup("y"); ok {
 						switch x := x.(type) {
@@ -48,12 +49,12 @@ var MathPlus = &common.Function{
 }
 
 // Sqrt ..
-var Sqrt = &common.Function{
+var Sqrt = &form.Function{
 	Name: "math#sqrt",
-	FixedArity: map[int]*common.Overload{
+	FixedArity: map[int]*form.Overload{
 		1: {
 			Params: []string{"x"},
-			Code: func(env *common.Environment) (interface{}, error) {
+			NativeCode: func(env *common.Environment) (interface{}, error) {
 				if x, ok := env.Lookup("x"); ok {
 					switch x := x.(type) {
 					case float64:

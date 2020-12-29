@@ -42,9 +42,9 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 		fnName = symbolForm.Name()
 		formIndex = 1
 	}
-	retFn := &common.Function{
+	retFn := &form.Function{
 		Name:       fnName,
-		FixedArity: make(map[int]*common.Overload),
+		FixedArity: make(map[int]*form.Overload),
 	}
 	for overloadIndex := formIndex; overloadIndex < len(forms); overloadIndex++ {
 		possibleOverload := forms[overloadIndex]
@@ -55,17 +55,6 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 			}
 			possibleParams := overloadItems[0]
 			bodyForms := overloadItems[1:]
-			code := func(env *common.Environment) (interface{}, error) {
-				var result interface{}
-				var err error
-				for _, bodyForm := range bodyForms {
-					result, err = bodyForm.Eval(env)
-					if err != nil {
-						return nil, err
-					}
-				}
-				return result, nil
-			}
 			if params, ok := possibleParams.(*form.ListForm); ok {
 				paramsItems := params.Items()
 				rawParamNames := make([]string, 0)
@@ -88,9 +77,9 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 						}
 						restParamName := rawParamNames[len(rawParamNames)-1]
 						paramNames = append(paramNames, restParamName)
-						retFn.Variadic = &common.Overload{
+						retFn.Variadic = &form.Overload{
 							Params: paramNames,
-							Code:   code,
+							Code:   bodyForms,
 						}
 						retFn.VariadicFixed = i
 						fixedOverload = false
@@ -106,9 +95,9 @@ func Fn(env *common.Environment, forms ...form.Form) (interface{}, error) {
 					if retFn.Variadic != nil && arity > retFn.VariadicFixed {
 						return nil, fmt.Errorf("Can't have fixed arity function with more params than variadic function")
 					}
-					retFn.FixedArity[arity] = &common.Overload{
+					retFn.FixedArity[arity] = &form.Overload{
 						Params: paramNames,
-						Code:   code,
+						Code:   bodyForms,
 					}
 				}
 			} else {

@@ -1,4 +1,6 @@
-package common
+package form
+
+import "github.com/adi/hilang-routine/common"
 
 // Function ..
 type Function struct {
@@ -10,6 +12,7 @@ type Function struct {
 
 // Overload ..
 type Overload struct {
-	Params []string
-	Code   func(*Environment) (interface{}, error)
+	Params     []string
+	Code       []Form
+	NativeCode func(env *common.Environment) (interface{}, error)
 }
