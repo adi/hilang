@@ -1,10 +1,10 @@
 package parser
 
-// Expression is either a Symbol or a List
+// Expression can be anything
 type Expression interface {
 }
 
-// List is a sequence of expressions that can be evaluated
+// List is a sequence of expressions
 type List struct {
 	Items []Expression
 }
