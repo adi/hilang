@@ -57,8 +57,8 @@ func (lstf ListForm) Eval(env *common.Environment) (interface{}, error) {
 		return value, nil
 	}
 
-	// Function => eval args into a function scoped environment before invocation
-	if function, ok := possibleCallable.(*Function); ok {
+	// FunctionForm => eval args into a function scoped environment before invocation
+	if function, ok := possibleCallable.(*FunctionForm); ok {
 
 		args := lstf.items[1:]
 

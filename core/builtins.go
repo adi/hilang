@@ -9,7 +9,7 @@ import (
 )
 
 // MathPlus ..
-var MathPlus = &form.Function{
+var MathPlus = &form.FunctionForm{
 	Name: "+",
 	FixedArity: map[int]*form.Overload{
 		2: {
@@ -49,7 +49,7 @@ var MathPlus = &form.Function{
 }
 
 // Sqrt ..
-var Sqrt = &form.Function{
+var Sqrt = &form.FunctionForm{
 	Name: "math#sqrt",
 	FixedArity: map[int]*form.Overload{
 		1: {
