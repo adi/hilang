@@ -34,6 +34,7 @@ func main() {
 	rootEnv := common.NewEnvironment(nil)
 	rootEnv.Set("def", core.Def)
 	rootEnv.Set("fn", core.Fn)
+	rootEnv.Set("let", core.Let)
 	rootEnv.Set("do", core.Do)
 	rootEnv.Set("+", core.MathPlus)
 	rootEnv.Set("sqrt", core.Sqrt)
@@ -43,7 +44,9 @@ func main() {
 	code := `
 		(def mysqrt
 			(fn ((x) (+ x 15))))
-		(mysqrt 2)
+		(def alpha
+			(fn (() (let (x 5 y (+ x 3)) y))))
+		(alpha)
 	`
 
 	parser := parser.NewParser(strings.NewReader(code), "main.hi")
